@@ -2,9 +2,9 @@
 
 namespace App\Domain\Interfaces\Product;
 
-interface ProductEntity
+use App\Domain\Interfaces\Purchasable;
+
+interface ProductEntity extends Purchasable
 {
     public function getName(): string;
-
-    public function getPrice(): float;
 }
