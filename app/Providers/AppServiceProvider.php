@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Adapters\Presenters\Inertia\CalculateProductPriceInertiaPresenter;
+use App\Adapters\Presenters\Json\CalculateProductPriceJsonPresenter;
 use App\Domain\Interfaces\Country\CountryFactory;
 use App\Domain\Interfaces\Country\CountryRepository;
 use App\Domain\Interfaces\Product\ProductFactory;
@@ -11,7 +12,6 @@ use App\Domain\Interfaces\Resolvers\PurchasablePriceResolverInterface;
 use App\Domain\Interfaces\Resolvers\TaxNumberCountryCodeResolver;
 use App\Domain\UseCases\Product\CalculatePrice\CalculatePriceInputPort;
 use App\Domain\UseCases\Product\CalculatePrice\CalculatePriceInteractor;
-use App\Domain\UseCases\Product\CalculatePrice\CalculateProductPriceViewModelFactory;
 use App\Factories\Eloquent\EloquentCountryFactory;
 use App\Factories\Eloquent\EloquentProductFactory;
 use App\Repositories\Eloquent\CountryRepositoryEloquent;
@@ -48,11 +48,6 @@ class AppServiceProvider extends ServiceProvider
         );
 
         $this->app->bind(
-            CalculatePriceInputPort::class,
-            CalculatePriceInteractor::class,
-        );
-
-        $this->app->bind(
             ProductRepository::class,
             ProductRepositoryEloquent::class,
         );
@@ -62,10 +57,21 @@ class AppServiceProvider extends ServiceProvider
             CountryRepositoryEloquent::class,
         );
 
-        $this->app->bind(
-            CalculateProductPriceViewModelFactory::class,
-            CalculateProductPriceInertiaPresenter::class,
-        );
+        $this->app->when(\App\Http\Controllers\Web\ProductController::class)
+            ->needs(CalculatePriceInputPort::class)
+            ->give(function($app) {
+                return $app->make(CalculatePriceInteractor::class, [
+                    'viewModelFactory' => $app->make(CalculateProductPriceInertiaPresenter::class),
+                ]);
+            });
+
+        $this->app->when(\App\Http\Controllers\Api\ProductController::class)
+            ->needs(CalculatePriceInputPort::class)
+            ->give(function($app) {
+                return $app->make(CalculatePriceInteractor::class, [
+                    'viewModelFactory' => $app->make(CalculateProductPriceJsonPresenter::class),
+                ]);
+            });
     }
 
     /**

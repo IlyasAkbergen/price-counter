@@ -21,7 +21,32 @@ class CalculateProductPriceJsonPresenter implements CalculateProductPriceViewMod
         ]));
     }
 
-    public function errorResponse(string $message): ViewModel
+    public function createFormResponse(): ViewModel
+    {
+        return new JsonResourceViewModel(new JsonResource([]));
+    }
+
+    public function productValueError(string $message): ViewModel
+    {
+        return new JsonResourceViewModel(new JsonResource([
+            'errors' => [
+                'product_id' => $message,
+            ],
+            'message' => $message,
+        ]));
+    }
+
+    public function taxNumberValueError(string $message): ViewModel
+    {
+        return new JsonResourceViewModel(new JsonResource([
+            'errors' => [
+                'tax_number' => $message,
+            ],
+            'message' => $message,
+        ]));
+    }
+
+    protected function errorResponse(string $message): ViewModel
     {
         return new JsonResourceViewModel(new JsonResource([
             'message' => $message,

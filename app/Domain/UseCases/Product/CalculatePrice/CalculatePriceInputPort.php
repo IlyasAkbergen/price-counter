@@ -6,5 +6,7 @@ use App\Domain\Interfaces\ViewModel;
 
 interface CalculatePriceInputPort
 {
+    public function getForm(): ViewModel;
+
     public function calculatePrice(CalculatePriceRequestModel $requestModel): ViewModel;
 }

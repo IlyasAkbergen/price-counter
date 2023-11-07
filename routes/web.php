@@ -1,9 +1,6 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
-use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,8 +13,9 @@ use Inertia\Inertia;
 |
 */
 
-Route::get('/', [\App\Http\Controllers\ProductController::class, 'calculationForm']);
-Route::POST('/product/calculate', [\App\Http\Controllers\ProductController::class, 'calculate']);
+Route::get('/', [ \App\Http\Controllers\Web\ProductController::class, 'calculationForm']);
+Route::get('/product/calculate', [ \App\Http\Controllers\Web\ProductController::class, 'calculationForm']);
+Route::post('/product/calculate', [ \App\Http\Controllers\Web\ProductController::class, 'calculate']);
 
 //Route::get('/', function () {
 //    return Inertia::render('Welcome', [

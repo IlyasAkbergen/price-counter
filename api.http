@@ -1,0 +1,39 @@
+### Success price value request
+POST http://localhost:8056/api/product/calculate
+Content-Type: application/json
+Accept: application/json
+
+{
+    "product_id": 1,
+    "tax_number": "IT123456789"
+}
+
+### Validation error: tax_number format
+POST http://localhost:8056/api/product/calculate
+Content-Type: application/json
+Accept: application/json
+
+{
+    "product_id": 1,
+    "tax_number": "ITA123456789"
+}
+
+### Validation error: country not found
+POST http://localhost:8056/api/product/calculate
+Content-Type: application/json
+Accept: application/json
+
+{
+    "product_id": 1,
+    "tax_number": "XX123456789"
+}
+
+### Product not found
+POST http://localhost:8056/api/product/calculate
+Content-Type: application/json
+Accept: application/json
+
+{
+    "product_id": 99,
+    "tax_number": "IT123456789"
+}

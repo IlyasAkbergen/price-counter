@@ -7,7 +7,7 @@ use App\Domain\Interfaces\Country\CountryFactory;
 use App\Domain\Interfaces\Country\CountryRepository;
 use App\Domain\Interfaces\Product\ProductFactory;
 use App\Domain\Interfaces\Product\ProductRepository;
-use App\Domain\UseCases\Product\CalculatePrice\CalculatePriceInputPort;
+use App\Domain\UseCases\Product\CalculatePrice\CalculatePriceInteractor;
 use App\Domain\UseCases\Product\CalculatePrice\CalculatePriceRequestModel;
 use App\Domain\UseCases\Product\CalculatePrice\CalculateProductPriceViewModelFactory;
 use App\Repositories\Eloquent\CountryRepositoryEloquent;
@@ -72,8 +72,8 @@ class CalculateProductPriceUseCaseTest extends TestCase
             fn() => $countryRepositoryMock,
         );
 
-        /** @var CalculatePriceInputPort $interactor */
-        $interactor = $this->app->get(CalculatePriceInputPort::class);
+        /** @var CalculatePriceInteractor $interactor */
+        $interactor = $this->app->make(CalculatePriceInteractor::class);
         $response = $interactor->calculatePrice($requestModel);
 
         if ($errorMessage) {

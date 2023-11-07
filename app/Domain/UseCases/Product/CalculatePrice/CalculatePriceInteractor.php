@@ -23,16 +23,16 @@ class CalculatePriceInteractor implements CalculatePriceInputPort
     {
         if (!$product = $requestModel->getProduct()) {
             if (!$product = $this->productRepository->getById($requestModel->getProductId())) {
-                return $this->viewModelFactory->errorResponse('Product not found.');
+                return $this->viewModelFactory->productValueError('Product not found.');
             }
         }
 
         if (!$countryCode = $this->countryCodeResolver->resolveCountryCode($requestModel->getTaxNumber())) {
-            return $this->viewModelFactory->errorResponse('Could not resolve country code from tax number');
+            return $this->viewModelFactory->taxNumberValueError('Could not resolve country code from tax number');
         }
 
         if (!$country = $this->countryRepository->getByCode($countryCode)) {
-            return $this->viewModelFactory->errorResponse(
+            return $this->viewModelFactory->taxNumberValueError(
                 sprintf('Could not find country with code %s', $countryCode),
             );
         }
@@ -46,5 +46,10 @@ class CalculatePriceInteractor implements CalculatePriceInputPort
                 $price,
             ),
         );
+    }
+
+    public function getForm(): ViewModel
+    {
+        return $this->viewModelFactory->createFormResponse();
     }
 }

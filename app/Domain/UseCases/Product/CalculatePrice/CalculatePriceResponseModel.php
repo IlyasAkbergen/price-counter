@@ -4,7 +4,6 @@ namespace App\Domain\UseCases\Product\CalculatePrice;
 
 use App\Domain\Interfaces\Country\CountryEntity;
 use App\Domain\Interfaces\Product\ProductEntity;
-use App\Domain\Interfaces\Purchasable;
 
 class CalculatePriceResponseModel
 {

@@ -1,29 +1,23 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Web;
 
-use App\Domain\Interfaces\Product\ProductRepository;
 use App\Domain\UseCases\Product\CalculatePrice\CalculatePriceInputPort;
 use App\Domain\UseCases\Product\CalculatePrice\CalculatePriceRequestModel;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\Product\CalculatePriceRequest;
 use Illuminate\Contracts\Support\Responsable;
-use Illuminate\Http\Request;
-use Inertia\Inertia;
 
 class ProductController extends Controller
 {
     public function __construct(
-        private ProductRepository $productRepository,
-        private CalculatePriceInputPort $calculatePriceInputPort,
+        private readonly CalculatePriceInputPort $calculatePriceInputPort,
     ) {
     }
 
     public function calculationForm(): Responsable
     {
-        // todo refactor by clean arch
-        return Inertia::render('Product/CalculateForm', [
-            'products' => $this->productRepository->getList(),
-        ]);
+        return $this->calculatePriceInputPort->getForm()->getResponse();
     }
 
     public function calculate(CalculatePriceRequest $request): Responsable
