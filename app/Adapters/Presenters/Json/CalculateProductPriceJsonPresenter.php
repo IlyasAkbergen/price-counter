@@ -6,6 +6,7 @@ use App\Adapters\ViewModels\JsonResourceViewModel;
 use App\Domain\Interfaces\ViewModel;
 use App\Domain\UseCases\Product\CalculatePrice\CalculatePriceResponseModel;
 use App\Domain\UseCases\Product\CalculatePrice\CalculateProductPriceViewModelFactory;
+use App\Http\Resources\UnwrappedJsonResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class CalculateProductPriceJsonPresenter implements CalculateProductPriceViewModelFactory
@@ -23,12 +24,12 @@ class CalculateProductPriceJsonPresenter implements CalculateProductPriceViewMod
 
     public function createFormResponse(): ViewModel
     {
-        return new JsonResourceViewModel(new JsonResource([]));
+        return new JsonResourceViewModel(new UnwrappedJsonResource([]));
     }
 
     public function productValueError(string $message): ViewModel
     {
-        return new JsonResourceViewModel(new JsonResource([
+        return new JsonResourceViewModel(new UnwrappedJsonResource([
             'errors' => [
                 'product_id' => $message,
             ],
@@ -38,17 +39,10 @@ class CalculateProductPriceJsonPresenter implements CalculateProductPriceViewMod
 
     public function taxNumberValueError(string $message): ViewModel
     {
-        return new JsonResourceViewModel(new JsonResource([
+        return new JsonResourceViewModel(new UnwrappedJsonResource([
             'errors' => [
                 'tax_number' => $message,
             ],
-            'message' => $message,
-        ]));
-    }
-
-    protected function errorResponse(string $message): ViewModel
-    {
-        return new JsonResourceViewModel(new JsonResource([
             'message' => $message,
         ]));
     }
